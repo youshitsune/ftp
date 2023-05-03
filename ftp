@@ -28,7 +28,7 @@ if __name__ == "__main__":
     parser = ArgumentParser(description="A CLI tool for connecting to ftp servers.")
     
     parser.add_argument("command")
-    parser.add_argument("-a", action="store_true", dest="anon")
+    parser.add_argument("-a", action="store_true", dest="anon", help="login with anonymous credentials")
     parser.add_argument("-H","--host", type=str, required=True, dest="host")
     parser.add_argument("-u","--user", type=str, required=False, dest="user")
     parser.add_argument("-p","--passwd", type=str, required=False, dest="passwd")
