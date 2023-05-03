@@ -4,7 +4,7 @@ from ftplib import FTP
 from argparse import ArgumentParser
 import os
 
-def retr(path, host, user, passwd):
+def retr(path, host, user="anonymous", passwd="anonymous"):
     ftp = FTP(host, user=user, passwd=passwd)
     filename = os.path.basename(path)
     with open(filename, 'wb') as f:
@@ -28,15 +28,22 @@ if __name__ == "__main__":
     parser = ArgumentParser(description="A CLI tool for connecting to ftp servers.")
     
     parser.add_argument("command")
-    parser.add_argument("-ho","--host", type=str, required=True)
-    parser.add_argument("-u","--user", type=str, required=True)
-    parser.add_argument("-p","--passwd", type=str, required=True)
-    parser.add_argument("-f","--file", type=str, required=True)
+    parser.add_argument("-a", action="store_true", dest="anon")
+    parser.add_argument("-H","--host", type=str, required=True, dest="host")
+    parser.add_argument("-u","--user", type=str, required=False, dest="user")
+    parser.add_argument("-p","--passwd", type=str, required=False, dest="passwd")
+    parser.add_argument("-f", "--file", type=str, required=True, dest="file")
 
     args = parser.parse_args()
 
     if args.command == "retr":
-        retr(args.file, args.host, args.user, args.passwd)
+        if args.anon:
+            retr(args.file, args.host)
+        else:
+            retr(args.file, args.host, args.user, args.passwd)
     elif args.command == "upload":
-        upload(args.file, args.host, args.user, args.passwd)
+        if args.anon:
+            upload(args.file, args.host)
+        else:
+            upload(args.file, args.host, args.user, args.passwd)
 
